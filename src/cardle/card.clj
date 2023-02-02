@@ -96,6 +96,16 @@
   [name]
   (cards (normalize-name name)))
 
+(def answers
+  "Vector of possible answer cards for the game to choose from."
+  (->> (io/resource "answers.txt")
+       io/reader
+       line-seq
+       (map #(do (when-not (get-card %) (println %)) %))
+       (keep get-card)
+       distinct
+       vec))
+
 (def field->comparison
   {:name      equality-comparison
    :colors    intersection-comparison
@@ -119,3 +129,7 @@
 (defn random-card
   []
   (rand-nth (vals cards)))
+
+(defn random-answer
+  []
+  (rand-nth answers))

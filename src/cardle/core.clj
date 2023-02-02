@@ -57,7 +57,7 @@
   (= guess answer))
 
 (defn run-game
-  ([] (run-game (card/random-card)))
+  ([] (run-game (card/random-answer)))
   ([answer]
    (println "Welcome to Cardle!")
    (loop [num-guesses 1]

@@ -1,0 +1,200 @@
+Plains
+Island
+Swamp
+Mountain
+Forest
+Command Tower
+Sol Ring
+Arcane Signet
+Swords to Plowshares
+Cultivate
+Counterspell
+Beast Within
+Rampant Growth
+Path to Exile
+Rakdos Signet
+Izzet Signet
+Dimir Signet
+Orzhov Signet
+Chaos Warp
+Cyclonic Rift
+Farseek
+Azorius Signet
+Blasphemous Act
+Boros Signet
+Rhystic Study
+Talisman of Creativity
+Heroic Intervention
+Assassin's Trophy
+Smothering Tithe
+Boros Charm
+Brainstorm
+Demonic Tutor
+Swiftfoot Boots
+Lightning Greaves
+Talisman of Dominance
+Eternal Witness
+Dovin's Veto
+Anguished Unmaking
+Llanowar Elves
+Generous Gift
+Negate
+Three Visits
+Sakura-Tribe Elder
+Rhythm of the Wild
+Nature's Lore
+Birds of Paradise
+Talisman of Hierarchy
+Ignoble Hierarch
+Talisman of Indulgence
+Terminate
+Growth Spiral
+Despark
+Esper Sentinel
+Teferi's Protection
+Talisman of Conviction
+Vampiric Tutor
+Elvish Mystic
+Ruinous Ultimatum
+Mind Stone
+Putrefy
+Arcane Denial
+Dockside Extortionist
+Avacyn's Pilgrim
+Simic Signet
+Fellwar Stone
+Faithless Looting
+Dark Ritual
+Mirari's Wake
+Swan Song
+Jeska's Will
+Vandalblast
+Reclamation Sage
+Fierce Guardianship
+Mystic Remora
+Enlightened Tutor
+Commander's Sphere
+Feed the Swarm
+Temur Ascendancy
+Ponder
+Noble Hierarch
+Eerie Ultimatum
+Mystical Tutor
+Sun Titan
+Windfall
+Solemn Simulacrum
+Mana Drain
+Sylvan Library
+Bedevil
+Elves of Deep Shadow
+Deathrite Shaman
+Nature's Claim
+Toxic Deluge
+Rakdos Charm
+Return of the Wildspeaker
+Golgari Signet
+Gruul Signet
+Beast Whisperer
+Deflecting Swat
+Supreme Verdict
+Talisman of Progress
+Mortify
+Preordain
+Baleful Strix
+Faeburrow Elder
+Thought Vessel
+Krosan Grip
+Worldly Tutor
+Ghostly Prison
+Skullclamp
+Reanimate
+Abrupt Decay
+Pongify
+Austere Command
+Avenger of Zendikar
+Mana Crypt
+Harrow
+Garruk's Uprising
+Selesnya Signet
+Blood Artist
+Bala Ged Recovery
+Zulaport Cutthroat
+Viscera Seer
+Aura Shards
+Utter End
+Goblin Anarchomancer
+Tatyova, Benthic Druid
+Shamanic Revelation
+Phyrexian Arena
+Morophon, the Boundless
+Bolas's Citadel
+Whirlwind of Thought
+Frantic Search
+Harmonize
+Propaganda
+Crop Rotation
+Wild Growth
+Thrill of Possibility
+Skyshroud Claim
+Reality Shift
+Wayfarer's Bauble
+Moldervine Reclamation
+Victimize
+Notion Thief
+Gray Merchant of Asphodel
+Force of Will
+Sterling Grove
+Coiling Oracle
+Seedborn Muse
+Animate Dead
+Fracture
+Talisman of Resilience
+Sign in Blood
+Dauthi Voidwalker
+Village Rites
+Talisman of Curiosity
+Etali, Primal Storm
+Scute Swarm
+Fact or Fiction
+Shalai, Voice of Plenty
+Goblin Electromancer
+Read the Bones
+Guardian Project
+Rishkar's Expertise
+Abrade
+Damnation
+Rapid Hybridization
+Wood Elves
+Arbor Elf
+Crackling Doom
+Villainous Wealth
+Mayhem Devil
+Sanctum of All
+Esika, God of the Tree
+The Great Henge
+Culling Ritual
+Veil of Summer
+Opt
+Opposition Agent
+Malakir Rebirth
+Vindicate
+Cruel Celebrant
+Pact of Negation
+Niv-Mizzet, Parun
+An Offer You Can't Refuse
+Merciless Eviction
+Anointed Procession
+Fist of Suns
+Storm-Kiln Artist
+Farewell
+Akroma's Will
+Valakut Awakening
+Dryad of the Ilysian Grove
+Finale of Devastation
+Force of Negation
+Mulldrifter
+Drannith Magistrate
+Gamble
+Thassa's Oracle
+Syr Konrad, the Grim
+Time Wipe
