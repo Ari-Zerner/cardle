@@ -10,7 +10,7 @@
   (flush)
   (let [input (read-line)
         guess (if (= input "reveal") :reveal (card/get-card input))]
-    (or guess (recur))))
+    (or guess (do (println "Invalid card.") (recur)))))
 
 (def field->field-name
   {:name      "Name"
@@ -28,7 +28,7 @@
   (let [quoted (map #(str \" % \") words)]
     (str "Includes "
          (str/join ", " (drop-last quoted))
-         (if (> 1 (count words)) ", and ")
+         (if (> (count words) 1) ", and ")
          (last quoted))))
 
 (def field->format-guess-comparison
@@ -51,10 +51,13 @@
 (defn check-guess
   "Given a guess and the answer, print a comparison message, then return whether the guess is correct."
   [guess answer]
-  (let [result (card/compare-cards guess answer)]
+  (let [result (card/compare-cards guess answer)
+        match (= guess answer)]
+    (println (:full-card guess) "\n----")
     (println (or (not-empty (str/join "\n" (map second (card/map-fields #(format-result-field % (% result))))))
-                 "No matching attributes.")))
-  (= guess answer))
+                 "No matching attributes."))
+    (println)
+    match))
 
 (defn run-game
   ([] (run-game (card/random-answer)))
@@ -63,7 +66,7 @@
    (loop [num-guesses 1]
      (let [guess (get-guess)]
        (cond
-         (= :reveal guess) (println (:name answer))
+         (= :reveal guess) (println (:full-card answer))
          (check-guess guess answer) (println "Solved in" num-guesses "guesses!")
          :else (recur (inc num-guesses)))))))
 

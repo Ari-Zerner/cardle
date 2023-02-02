@@ -69,10 +69,19 @@
    :toughness #(% "toughness")
    :text      #(parse-rules-text (or (% "text") ""))})
 
+(defn full-card-from-raw
+  [{:strs [faceName name manaCost type power toughness text]}]
+  (str (or faceName name) "\t" manaCost
+       "\n" type
+       "\n" text
+       (when (and power toughness)
+         (str "\n" power "/" toughness))))
+
 (defn- process-raw-card
   "Turns a raw card record into a formatted card."
   [raw-card]
-  (let [card (map-fields #((field->from-raw %) raw-card))]
+  (let [card (-> (map-fields #((field->from-raw %) raw-card))
+                 (assoc :full-card (full-card-from-raw raw-card)))]
     [(normalize-name (:name card)) card]))
 
 (defn- process-raw-cards
