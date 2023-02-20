@@ -74,3 +74,11 @@
            (if correct
              (println "Solved in" num-guesses "guesses!")
              (recur (inc num-guesses)))))))))
+
+(defn -main
+  [& [answer-name]]
+  (if answer-name
+    (if-let [answer (card/get-card answer-name)]
+      (run-game answer)
+      (println "Invalid card:" answer-name))
+    (run-game)))
