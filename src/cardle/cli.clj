@@ -53,7 +53,7 @@
   [guess answer]
   (let [result (card/compare-cards guess answer)
         correct (= guess answer)
-        message (str (:full-card guess) "\n----"
+        message (str (:full-card guess) "\n----\n"
                      (or (->> (card/map-fields #(format-result-field % (% result)))
                               (map second)
                               (str/join "\n")
