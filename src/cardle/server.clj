@@ -26,16 +26,11 @@
 
 (defroutes
   api-routes
-
-  (GET "/" [] "Welcome to Cardle!")
-
-  (GET "/start" [] (handle-start))
-
-  (GET "/guess" [guess answer] (handle-guess guess answer))
-
-  (route/not-found "Endpoint not found")
-
-  )
+  (context "/api" []
+    (GET "/" [] "Sorry, this API doesn't have documentation yet. https://github.com/Ari-Zerner/cardle")
+    (GET "/start" [] (handle-start))
+    (GET "/guess" [guess answer] (handle-guess guess answer)))
+  (route/not-found "Endpoint not found"))
 
 (def handler
   (-> api-routes
