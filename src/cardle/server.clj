@@ -4,7 +4,8 @@
             [cardle.cli :as cli]
             [compojure.route :as route]
             [ring.middleware.defaults :as ring-defaults]
-            [ring.middleware.json :as ring-json]))
+            [ring.middleware.json :as ring-json]
+            [ring.middleware.params :as ring-params]))
 
 (defn handle-start
   []
@@ -29,10 +30,11 @@
   (context "/api" []
     (GET "/" [] "Sorry, this API doesn't have documentation yet. https://github.com/Ari-Zerner/cardle")
     (GET "/start" [] (handle-start))
-    (GET "/guess" [guess answer] (handle-guess guess answer)))
+    (POST "/guess" {{:keys [guess answer]} :params} (handle-guess guess answer)))
   (route/not-found "Endpoint not found"))
 
 (def handler
   (-> api-routes
       (ring-defaults/wrap-defaults ring-defaults/api-defaults)
-      (ring-json/wrap-json-response)))
+      ring-json/wrap-json-response
+      ring-params/wrap-params))

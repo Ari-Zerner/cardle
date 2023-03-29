@@ -57,7 +57,7 @@
 
 (defn- normalize-name
   [name]
-  (apply str (-> name str/lower-case (str/split #"[^a-z ]"))))
+  (apply str (interpose " " (some-> name str/lower-case (str/split #"[^a-z]+")))))
 
 (def ^:private field->from-raw
   "Functions for getting each field from the raw data."
@@ -93,9 +93,8 @@
        (map process-raw-card)
        (into {})))
 
-(def cards
-  "Map of cards keyed by name."
-  (-> (io/resource "cards.json")                            ; "https://mtgjson.com/api/v5/AtomicCards.json"
+(defonce ^{:doc "Map of cards keyed by name."} cards
+  (-> "https://mtgjson.com/api/v5/AtomicCards.json"
       io/reader
       json/read
       (get "data")
