@@ -16,11 +16,6 @@
        (map str/lower-case)
        vec))
 
-(defn- when-val
-  "(when (p x) x)"
-  [p x]
-  (when (p x) x))
-
 ;; A comparison is a function that, given a guessed attribute and the corresponding true attribute, returns nil if there
 ;; is no "match", or a "match" value, the type of which depends on the comparison.
 
@@ -28,13 +23,13 @@
   "Matches if values are equal, returning true."
   [guess-val answer-val]
   (when (some? guess-val)
-    (when-val true? (= guess-val answer-val))))
+    (util/when-val true? (= guess-val answer-val))))
 
 (defn- intersection-comparison
-  "Matches if values have any common elements, returning the number of common elements."
+  "Matches if values have any common elements, returning the number of common elements, or true on a perfect match."
   [guess-coll answer-coll]
   (or (= guess-coll answer-coll)
-      (when-val pos? (count (filter (set answer-coll) guess-coll)))))
+      (util/when-val pos? (count (filter (set answer-coll) guess-coll)))))
 
 (defn- words-comparison
   "Matches if values have any words in common, returning the shared words in order of appearance in the guess."
@@ -46,7 +41,7 @@
                    [overlap remaining]))
                [[] (frequencies answer-words)])
        first
-       (when-val seq)))
+       (util/when-val seq)))
 
 (def fields [:name :colors :types :cmc :power :toughness :text])
 
