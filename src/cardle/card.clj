@@ -57,7 +57,7 @@
 
 (defn- normalize-name
   [name]
-  (apply str (interpose " " (some-> name str/lower-case (str/split #"[^a-z]+")))))
+  (apply str (interpose " " (some-> name str/lower-case (str/split #"[^a-z_]+")))))
 
 (def ^:private field->from-raw
   "Functions for getting each field from the raw data."
