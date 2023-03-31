@@ -42,6 +42,7 @@
 (defn- render-head
   [& [subtitle]]
   [:head
+   [:meta {:charset "UTF-8"}]
    [:title (str "Cardle" (when subtitle (str " – " subtitle)))]
    [:link {:rel "stylesheet" :type "text/css" :href "/css/styles.css"}]])
 
