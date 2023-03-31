@@ -1,7 +1,10 @@
 (ns cardle.card
-  (:require [clojure.java.io :as io]
-            [clojure.data.json :as json]
-            [clojure.string :as str]))
+  (:require
+    [cardle.util :as util]
+    [clojure.java.io :as io]
+    [clojure.data.json :as json]
+    [clojure.string :as str]
+    [clj-http.client :as client]))
 
 (defn- parse-rules-text
   "Turns rules text into a vector of lowercase words."
@@ -100,17 +103,30 @@
       (get "data")
       process-raw-cards))
 
-(defn get-card
+(defn- get-local-card
   [name]
   (cards (normalize-name name)))
+
+(defn- search-scryfall
+  "Search for a card using the Scryfall API. Allows for misspellings but requires a network call."
+  [name]
+  (let [{:keys [status body]}
+        (client/get "https://api.scryfall.com/cards/named?"
+                    {:query-params     {:fuzzy name}
+                     :throw-exceptions false})]
+    (when (= status 200) (get-local-card (:name (util/read-json body))))))
+
+(defn get-card
+  "Get a card by name, trying Scryfall's fuzzy search if not found initially."
+  [name]
+  (or (get-local-card name) (search-scryfall name)))
 
 (def answers
   "Vector of possible answer cards for the game to choose from."
   (->> (io/resource "answers.txt")
        io/reader
        line-seq
-       (map #(do (when-not (get-card %) (println %)) %))
-       (keep get-card)
+       (keep get-local-card)
        distinct
        vec))
 
