@@ -1,5 +1,5 @@
 (ns cardle.client
-  (:require [clojure.data.json :as json]
+  (:require [cardle.util :as util]
             [clojure.string :as str]
             [compojure.core :refer :all]
             [hiccup.core :as hiccup]
@@ -14,7 +14,7 @@
 
 (defn- get-answer
   []
-  (some-> (api-url "/start") client/get :body json/read-str (get "answer")))
+  (some-> (api-url "/start") client/get :body util/read-json :answer))
 
 (defn- compare-cards
   [guess answer]
@@ -24,8 +24,8 @@
     (case status
       200
       {:status  :ok
-       :correct (-> body json/read-str (get "correct"))
-       :message (-> body json/read-str (get "message"))}
+       :correct (-> body util/read-json :correct)
+       :message (-> body util/read-json :message)}
       404
       {:status  :not-found
        :message (str "The card you guessed (" guess ") was not recognized.")}
