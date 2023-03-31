@@ -14,7 +14,7 @@
 
 (defn handle-guess
   [guess-name answer-name]
-  (if-let [guess (card/get-card guess-name)]
+  (if-let [guess (card/get-card (if (= guess-name "devreveal") answer-name guess-name))]
     (if-let [answer (card/get-card answer-name)]
       (let [[correct message] (cli/check-guess guess answer)]
         {:status 200
