@@ -23,9 +23,10 @@
                                             :throw-exceptions false})]
     (case status
       200
-      {:status  :ok
-       :correct (-> body util/read-json :correct)
-       :message (-> body util/read-json :message)}
+      {:status     :ok
+       :correct    (-> body util/read-json :correct)
+       :message    (-> body util/read-json :message)
+       :guess-name (-> body util/read-json :guess :name)}
       404
       {:status  :not-found
        :message (str "The card you guessed (" guess ") was not recognized.")}
@@ -46,15 +47,23 @@
    [:title (str "Cardle" (when subtitle (str " – " subtitle)))]
    [:link {:rel "stylesheet" :type "text/css" :href "/css/styles.css"}]])
 
+(defn- render-card-image
+  [name]
+  [:img {:src (api-url (str "/image?name=" (client/url-encode-illegal-characters name)))
+         :alt name
+         :width 244
+         :height 320}])
+
 (defn- render-message-log
   [session]
   (let [[last-result & results] (:results session)]
-    [:p (str/replace (->> results
-                          (filter #(= :ok (:status %)))
-                          (concat [last-result])
-                          (map :message)
-                          (str/join "\n\n\n"))
-                     "\n" "<br>")]))
+    (->> results
+         (filter #(= :ok (:status %)))
+         (concat [last-result])
+         (map #(vector :p
+                       (some-> % :guess-name render-card-image)
+                       [:br]
+                       (str/replace (str (:message %)) "\n" "<br>"))))))
 
 (defn- render-win-page
   [session]
