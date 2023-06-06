@@ -48,7 +48,7 @@
 
 (defn- render-card-image
   [name]
-  [:img {:src (api-url (str "/image?name=" (client/url-encode-illegal-characters name)))
+  [:img {:src (str "/api/image?name=" (client/url-encode-illegal-characters name))
          :alt name
          :width 244
          :height 320}])
