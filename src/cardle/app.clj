@@ -1,16 +1,15 @@
-(ns cardle.client
+(ns cardle.app
+  (:use [compojure.core])
   (:require [cardle.util :as util]
             [clojure.string :as str]
-            [compojure.core :refer :all]
             [hiccup.core :as hiccup]
             [clj-http.client :as client]
             [ring.middleware.params :as ring-params]
-            [ring.middleware.resource :as ring-resource]
             [ring.middleware.session :as ring-session]))
 
 (defn- api-url
   [route]
-  (str "http://localhost:8080/api" route))
+  (str "http://localhost:3000/api" route))
 
 (defn- get-answer
   []
@@ -130,8 +129,8 @@
            (GET "/" {:keys [session]} (handle-entry session))
            (POST "/" {:keys [params session]} (handle-guess (get params "guess") session)))
 
-(def handler
-  (-> app-routes
+(defn app-middleware
+  [routes]
+  (-> routes
       ring-params/wrap-params
-      (ring-session/wrap-session {:cookie-name "cardle-game"})
-      (ring-resource/wrap-resource "public")))
+      (ring-session/wrap-session {:cookie-name "cardle-game"})))

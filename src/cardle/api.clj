@@ -1,10 +1,9 @@
-(ns cardle.server
+(ns cardle.api
   (:use [compojure.core])
   (:require [cardle.card :as card]
             [cardle.cli :as cli]
             [cardle.image :as image]
             [clojure.java.io :as io]
-            [compojure.route :as route]
             [ring.middleware.defaults :as ring-defaults]
             [ring.middleware.json :as ring-json]
             [ring.middleware.params :as ring-params]))
@@ -44,11 +43,11 @@
     (GET "/" [] "Sorry, this API doesn't have documentation yet. https://github.com/Ari-Zerner/cardle")
     (GET "/start" [] (handle-start))
     (POST "/guess" {{:keys [guess answer]} :params} (handle-guess guess answer))
-    (GET "/image" {{:keys [name]} :params} (handle-image name)))
-  (route/not-found "Endpoint not found"))
+    (GET "/image" {{:keys [name]} :params} (handle-image name))))
 
-(def handler
-  (-> api-routes
+(defn api-middleware
+  [routes]
+  (-> routes
       (ring-defaults/wrap-defaults ring-defaults/api-defaults)
       ring-json/wrap-json-response
       ring-params/wrap-params))

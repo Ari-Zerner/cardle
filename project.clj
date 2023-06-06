@@ -10,11 +10,8 @@
                  [clj-http/clj-http "3.12.3"]]
   :source-paths     ["src"]
   :watch-dirs       ["src"]
-  :profiles {:cli    {:main cardle.cli}
-             :server {:plugins [[lein-ring "0.12.6"]]
-                      :ring    {:handler cardle.server/handler}}
-             :client {:plugins [[lein-ring "0.12.6"]]
-                      :ring    {:handler cardle.client/handler}}}
-  :aliases {"run-cli"    ["with-profile" "cli" "run"]
-            "run-server" ["with-profile" "server" "ring" "server-headless" "8080"]
-            "run-client" ["with-profile" "client" "ring" "server" "3000"]})
+  :profiles {:webapp {:plugins [[lein-ring "0.12.6"]]
+                      :ring    {:handler cardle.webapp/handler}}
+             :cli    {:main cardle.cli}}
+  :aliases {"run"        ["with-profile" "webapp" "ring" "server" "3000"]
+            "run-cli"    ["with-profile" "cli" "run"]})
