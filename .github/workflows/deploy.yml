@@ -1,0 +1,32 @@
+name: Deploy Cardle
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup SSH
+        run: |
+          eval $(ssh-agent -s)
+          echo "$SSH_KEY" > cardle_id
+          chmod 400 cardle_id
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      - name: Build Docker image
+        run: docker build -t cardle-image .
+
+      - name: Deploy to Server
+        run: |
+          docker save cardle-image | ssh -o StrictHostKeyChecking=no -i cardle_id "$SSH_HOST" 'docker load'
+          ssh -i cardle_id "$SSH_HOST" 'docker run -d -p 3000:3000 cardle-image'
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
