@@ -13,5 +13,5 @@
   :profiles {:webapp {:plugins [[lein-ring "0.12.6"]]
                       :ring    {:handler cardle.webapp/handler}}
              :cli    {:main cardle.cli}}
-  :aliases {"run"        ["with-profile" "webapp" "ring" "server" "3000"]
+  :aliases {"run"        ["with-profile" "webapp" "ring" "server-headless" "3000"]
             "run-cli"    ["with-profile" "cli" "run"]})
