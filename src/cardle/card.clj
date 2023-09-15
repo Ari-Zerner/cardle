@@ -2,7 +2,6 @@
   (:require
     [cardle.util :as util]
     [clojure.java.io :as io]
-    [clojure.data.json :as json]
     [clojure.string :as str]
     [clj-http.client :as client]))
 
@@ -53,54 +52,15 @@
        (remove (comp nil? second))
        (into {})))
 
-(defn- normalize-name
-  [name]
-  (apply str (interpose " " (some-> name str/lower-case (str/split #"[^a-z_]+")))))
-
-(def ^:private field->from-raw
-  "Functions for getting each field from the raw data."
-  {:name      #(or (% "faceName") (% "name"))
-   :colors    #(str/join (sort-by {\W 0 \U 1 \B 2 \R 3 \G 4} (% "colors")))
-   :types     #(str/split (or (% "type") "") #"[ —]+")
-   :cmc       #(int (or (% "faceManaValue") (% "manaValue")))
-   :power     #(% "power")
-   :toughness #(% "toughness")
-   :text      #(parse-rules-text (or (% "text") ""))})
-
-(defn full-card-from-raw
-  [{:strs [faceName name manaCost type power toughness text]}]
-  (str (or faceName name) "\t" manaCost
-       "\n" type
-       "\n" text
-       (when (and power toughness)
-         (str "\n" power "/" toughness))))
-
-(defn- process-raw-card
-  "Turns a raw card record into a formatted card."
-  [raw-card]
-  (let [card (-> (map-fields #((field->from-raw %) raw-card))
-                 (assoc :full-card (full-card-from-raw raw-card)))]
-    [(normalize-name (:name card)) card]))
-
-(defn- process-raw-cards
-  "Turns the raw card records into a map of formatted cards keyed by name."
-  [cards]
-  (->> cards
-       vals
-       (apply concat)
-       (map process-raw-card)
-       (into {})))
-
-(defonce ^{:doc "Map of cards keyed by name."} cards
-  (-> "https://mtgjson.com/api/v5/AtomicCards.json"
-      io/reader
-      json/read
-      (get "data")
-      process-raw-cards))
-
-(defn- get-local-card
-  [name]
-  (cards (normalize-name name)))
+(def ^:private field->from-scryfall
+  "Functions for getting each field from the Scryfall data."
+  {:name      :name
+   :colors    #(str/join (sort-by {\W 0 \U 1 \B 2 \R 3 \G 4} (:colors %)))
+   :types     #(str/split (:type_line %) #"[ —]+")
+   :cmc       #(int (:cmc %))
+   :power     :power
+   :toughness :toughness
+   :text      #(parse-rules-text (:oracle_text %))})
 
 (defn- search-scryfall
   "Search for a card using the Scryfall API. Allows for misspellings but requires a network call."
@@ -109,19 +69,31 @@
         (client/get "https://api.scryfall.com/cards/named?"
                     {:query-params     {:fuzzy name}
                      :throw-exceptions false})]
-    (when (= status 200) (get-local-card (:name (util/read-json body))))))
+    (when (= status 200) (util/read-json body))))
+
+(defn- process-scryfall-card
+  [card]
+  (let [face (merge card (or (first (:card_faces card)) {}))]
+    (-> (map-fields #((field->from-scryfall %) face))
+        (assoc :full-card "<placeholder text>"))))
+
+(defn- get-scryfall-card
+  [name]
+  (some-> name search-scryfall process-scryfall-card))
+
+(def memoized-get-scryfall-card (memoize get-scryfall-card))
 
 (defn get-card
-  "Get a card by name, trying Scryfall's fuzzy search if not found initially."
+  "Get a card by name. Returns nil if card isn't found."
   [name]
-  (or (get-local-card name) (search-scryfall name)))
+  (memoized-get-scryfall-card name))
 
 (def answers
   "Vector of possible answer cards for the game to choose from."
   (->> (io/resource "answers.txt")
        io/reader
        line-seq
-       (keep get-local-card)
+       (keep get-card)
        distinct
        vec))
 
@@ -144,10 +116,6 @@
   "Applies comparisons to each field."
   [guess-card answer-card]
   (map-fields #(compare-field % guess-card answer-card)))
-
-(defn random-card
-  []
-  (rand-nth (vals cards)))
 
 (defn random-answer
   []
