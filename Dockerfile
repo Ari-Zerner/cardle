@@ -13,5 +13,8 @@ RUN lein deps
 # Copy the rest of the source code
 COPY . .
 
+# define the port number the container should expose
+EXPOSE 3000
+
 # Run the web app
 CMD ["lein", "run"]
