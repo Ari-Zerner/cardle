@@ -29,7 +29,7 @@
 
 (defn- path-for-card
   [name]
-  (str "resources/images/" (normalize-name name) ".jpg"))
+  (str (System/getenv "RESOURCES_DIR") "/images/" (normalize-name name) ".jpg"))
 
 (defn- download-card-image
   "Download a card image from Scryfall into the directory specified by `card-images-resource`.
