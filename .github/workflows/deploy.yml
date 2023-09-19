@@ -27,6 +27,6 @@ jobs:
       - name: Deploy to Server
         run: |
           docker save cardle-image | ssh -o StrictHostKeyChecking=no -i cardle_id "$SSH_HOST" 'docker load'
-          ssh -i cardle_id "$SSH_HOST" 'docker stop $(docker ps -q); docker run -d -p 80:3000 cardle-image'
+          ssh -i cardle_id "$SSH_HOST" 'docker stop $(docker ps -q); docker run -d -p 3000:3000 cardle-image'
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
